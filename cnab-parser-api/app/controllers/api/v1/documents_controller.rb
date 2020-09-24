@@ -21,7 +21,7 @@ class Api::V1::DocumentsController < Api::V1::ApiController
         return json_success(@document, :created)
       else
         @document.destroy
-        return json_error("Erro ao processar cnabs")
+        return json_error("Erro ao processar cnabs. Há alguns dados não normalizados.")
       end
     end
 

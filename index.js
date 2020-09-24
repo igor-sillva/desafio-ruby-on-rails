@@ -255,7 +255,7 @@ const App = (() => {
 
         fromEvent(this.uploadButton, 'click')
           .pipe(
-            tap(() => this.uploadButton.setAttribute('disabled', true)),
+            // tap(() => this.uploadButton.setAttribute('disabled', true)),
             switchMap(() => from(this.doUpload()))
           )
           .subscribe(),
@@ -287,10 +287,20 @@ const App = (() => {
         const formData = new FormData(formElement);
 
         this.documentService.createDocument(formData)
-          .then((response) => {
+          .then(async (response) => {
             
+            const { errors } = await response.json();
+
             if (response.ok) {
               this.onMessage$.next();
+            } else {
+              presentToast({
+                message: `${[...[ errors ]].join(', ')}`,
+                duration: 2000,
+                buttons: [
+                  { icon: 'close', color: 'danger' }
+                ]
+              });
             }
 
             formElement.remove();
@@ -552,7 +562,10 @@ const App = (() => {
         listContent.innerHTML += `
             ${documents.map(document => `
             <ion-item>
-              <ion-label>${document.name}</ion-label>
+              <ion-label class="ion-text-wrap">
+                <h2>${document.name}</h2>
+                <p>${new Date(document.processed_at).toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              </ion-label>
               <ion-button class="destroy" color="danger" data-id="${document.id}" fill="clear" slot="end">
                 <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
               </ion-button>
