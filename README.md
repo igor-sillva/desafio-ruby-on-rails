@@ -1,87 +1,261 @@
-# Desafio programação - para vaga desenvolvedor Ruby on Rails
+# Iniciando Rails API
 
-Por favor leiam este documento do começo ao fim, com muita atenção.
-O intuito deste teste é avaliar seus conhecimentos técnicos, para ser mais específico em Ruby on Rails.
-O teste consiste em parsear [este arquivo de texto(CNAB)](https://github.com/ByCodersTec/desafio-ruby-on-rails/blob/master/CNAB.txt) e salvar suas informações(transações financeiras) em uma base de dados a critério do candidato.
-Este desafio deve ser feito por você em sua casa. Gaste o tempo que você quiser, porém normalmente você não deve precisar de mais do que algumas horas.
+Comece buildando
+```
+$ docker-compose build
+```
 
-# Instruções de entrega do desafio
 
-1. Primeiro, faça um fork deste projeto para sua conta no Github (crie uma se você não possuir).
-2. Em seguida, implemente o projeto tal qual descrito abaixo, em seu clone local.
-3. Por fim, envie via email o projeto ou o fork/link do projeto para seu contato Bycoders_.
+Então crie o banco de dados, as migrações e as sementes
+```
+$ docker-compose run app bundle exec rails db:create
+$ docker-compose run app bundle exec rails db:migrate
+$ docker-compose run app bundle exec rails db:seed
+```
 
-# Descrição do projeto
+Finalmente, inicie a aplicação
+```
+$ docker-compose up --build
+```
 
-Você recebeu um arquivo CNAB com os dados das movimentações finanaceira de várias lojas.
-Precisamos criar uma maneira para que estes dados sejam importados para um banco de dados.
+Obs: a `aplicação` estará rodando em `localhost:3000`, verifique se não há nenhum serviço rodando nesta porta.
 
-Sua tarefa é criar uma interface web que aceite upload do [arquivo CNAB](https://github.com/ByCodersTec/desafio-ruby-on-rails/blob/master/CNAB.txt), normalize os dados e armazene-os em um banco de dados relacional e exiba essas informações em tela.
+# Abrindo aplicação Web
 
-**Sua aplicação web DEVE:**
+Abra o arquivo `[Document reader app](./index.html)` em um browser moderno com Internet!
 
-1. Ter uma tela (via um formulário) para fazer o upload do arquivo(pontos extras se não usar um popular CSS Framework )
-2. Interpretar ("parsear") o arquivo recebido, normalizar os dados, e salvar corretamente a informação em um banco de dados relacional, **se atente as documentações** que estão logo abaixo.
-3. Exibir uma lista das operações importadas por lojas, e nesta lista deve conter um totalizador do saldo em conta
-4. Ser escrita obrigatoriamente em Ruby 2.0+ e Rails 5+
-5. Ser simples de configurar e rodar, funcionando em ambiente compatível com Unix (Linux ou Mac OS X). Ela deve utilizar apenas linguagens e bibliotecas livres ou gratuitas.
-6. Git com commits bem descritos
-7. PostgreSQL
-8. RUBOCOP
-9. RSPEC
-10. Simplecov para disponibilizar o code coverage
-11. Docker compose (Pontos extras se utilizar)
-12. Readme file descrevendo bem o projeto e seu setup
-13. Incluir informação descrevendo como consumir o endpoint da API
+Pronto!
 
-**Sua aplicação web não precisa:**
+----------------------------------------------------------
+# Documentação
+A documento da API pode ser vista em `localhost:3000/apipie`
 
-1. Lidar com autenticação ou autorização (pontos extras se ela fizer, mais pontos extras se a autenticação for feita via OAuth).
-2. Ser escrita usando algum framework específico (mas não há nada errado em usá-los também, use o que achar melhor).
-3. Documentação da api.(Será um diferencial e pontos extras se fizer)
+Obs:
+- Rotas `Públicas` são as que não precisam de autenticação do usuário
+- Rotas `Privadas` necessitam de autenticação do usuário para comunicar com a api, sendo obrigatório a presença dos seguintes cabeçalhos em num requisição: 
 
-# Documentação do CNAB
+```js
+// Exemplo
+new Headers({
+  'access-token': <access-token>, 
+  'expiry'; <expiry>, 
+  'token-type': <token-type>, 
+  'uid'; <uid>, 
+  'client': <client>
+})
+```
 
-| Descrição do campo  | Inicio | Fim | Tamanho | Comentário
-| ------------- | ------------- | -----| ---- | ------
-| Tipo  | 1  | 1 | 1 | Tipo da transação
-| Data  | 2  | 9 | 8 | Data da ocorrência
-| Valor | 10 | 19 | 10 | Valor da movimentação. *Obs.* O valor encontrado no arquivo precisa ser divido por cem(valor / 100.00) para normalizá-lo.
-| CPF | 20 | 30 | 11 | CPF do beneficiário
-| Cartão | 31 | 42 | 12 | Cartão utilizado na transação 
-| Hora  | 43 | 48 | 6 | Hora da ocorrência atendendo ao fuso de UTC-3
-| Dono da loja | 49 | 62 | 14 | Nome do representante da loja
-| Nome loja | 63 | 81 | 19 | Nome da loja
 
-# Documentação sobre os tipos das transações
+## Autenticação
 
-| Tipo | Descrição | Natureza | Sinal |
-| ---- | -------- | --------- | ----- |
-| 1 | Débito | Entrada | + |
-| 2 | Boleto | Saída | - |
-| 3 | Financiamento | Saída | - |
-| 4 | Crédito | Entrada | + |
-| 5 | Recebimento Empréstimo | Entrada | + |
-| 6 | Vendas | Entrada | + |
-| 7 | Recebimento TED | Entrada | + |
-| 8 | Recebimento DOC | Entrada | + |
-| 9 | Aluguel | Saída | - |
+### Registro
+### POST /auth (Pública)
+#### @param {String} email
+#### @param {String} password
 
-# Avaliação
+Registra usuário na aplicação
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/auth", {
+  "headers": {
+    "accept": "application/json",
+    "content-type": "application/json",
+  },
+  "body": "{\"email\":\"teste@teste.com\",\"password\":\"123456\"}",
+  "method": "POST",
+});
 
-Seu projeto será avaliado de acordo com os seguintes critérios.
+// @return
+// {"success":true,"data":{"id":1, ...}}
+```
 
-1. Sua aplicação preenche os requerimentos básicos?
-2. Você documentou a maneira de configurar o ambiente e rodar sua aplicação?
-3. Você seguiu as instruções de envio do desafio?
-4. Qualidade e cobertura dos testes unitários.
+### Login (Pública)
+### POST /auth/sign_in
+#### @param {String} email
+#### @param {String} password
 
-Adicionalmente, tentaremos verificar a sua familiarização com as bibliotecas padrões (standard libs), bem como sua experiência com programação orientada a objetos a partir da estrutura de seu projeto.
+Autentica usuário na aplicação
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/auth/sign_in", {
+  "headers": {
+    "accept": "application/json",
+    "content-type": "application/json",
+  },
+  "body": "{\"email\":\"teste@teste.com\",\"password\":\"123456\"}",
+  "method": "POST",
+});
 
-# Referência
+// @return
+// Headers
+// {
+//   "access-token": "EmRccQj_dDlE5I4FwGS4Lg",
+//   "client": "7CDv1ykwnNCSszklc6EFnA",
+//   "expiry": "1602134234",
+//   "token-type": "Bearer",
+//   "uid": "teste@teste.com"
+// }
+// {"success":true,"data":{"id":1, ...}}
+```
 
-Este desafio foi baseado neste outro desafio: https://github.com/lschallenges/data-engineering
+### Logout (Privada)
+### POST /auth/sign_out
 
----
+Efetua logout na aplicação
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/auth/sign_out", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "application/json",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "body": null,
+  "method": "DELETE",
+});
 
-Boa sorte!
+// @return
+// empty
+```
+
+### Validar Token (Privada)
+### POST /auth/validate_token
+
+Valida token do usuário na aplicação
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/auth/validate_token", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "application/json",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "method": "GET",
+  "mode": "cors"
+});
+
+// @return
+// {"success":true,"data":{"id":1, ...}}
+```
+
+----------------------------------------------------------------
+## Cnab
+
+Os `Documentos` carregados são lidos, normalizados e salvos,
+assim, possibilitando sua manipulação
+
+### Lista de registros
+### GET /cnabs
+
+Lista todos os `cnabs` (registros de transações) salvos
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/cnabs", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "application/json",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "method": "GET",
+  "mode": "cors"
+});
+
+// @return
+// { "data":[...] }
+```
+
+### Destruir registro
+### DELETE /cnabs/:id
+#### @param {Number} id Código do registro a ser deletado
+
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/cnabs/1", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "application/json",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "method": "DELETE"
+});
+
+// @return
+// empty
+```
+
+
+-----------------------------------------------------
+## Documento
+
+Cada documento carregado por usuário é salvo, normalizado e extraído suas informações para que possam ser manipuladas
+### Listar Documentos
+### GET /documents 
+```js
+
+
+// @return
+// { "data":[...] }
+```
+
+### Criar Documento
+### POST /documents 
+#### @param {FormData} file
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/documents", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryHokI80M95SAJk1CI",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "body": "------WebKitFormBoundaryHokI80M95SAJk1CI\r\nContent-Disposition: form-data; name=\"file\"; filename=\"CNAB.txt\"\r\nContent-Type: text/plain\r\n\r\n\r\n------WebKitFormBoundaryHokI80M95SAJk1CI--\r\n",
+  "method": "POST"
+});
+
+// @return
+// { "data":{"id":1,"name":"CNAB.txt","processed_at":"2020-09-24T05:30:05.339Z"} }
+```
+
+### Destruir documento
+### DELETE /documents/:id
+#### @param {Number} id Código do registro a ser deletado
+
+```js
+// Exemplo
+fetch("http://localhost:3000/api/v1/documents/1", {
+  "headers": {
+    "accept": "application/json",
+    "access-token": "O5VSQTvTX92WpjBZTnmROg",
+    "client": "HOrdyMeG5VfTmhK6rnT_UA",
+    "content-type": "application/json",
+    "expiry": "1602134345",
+    "token-type": "Bearer",
+    "uid": "teste@teste.com"
+  },
+  "method": "DELETE"
+});
+
+// @return
+// empty
+```
+
