@@ -19,7 +19,7 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# Dotenv::Railtie.load
+Dotenv::Railtie.load
 
 module CnabParserApi
   class Application < Rails::Application
