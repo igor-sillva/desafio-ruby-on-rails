@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transaction: one
+  date: 2020-09-21 23:24:52
+  value: 1.5
+  document: MyString
+  credit_card: MyString
+  owner: MyString
+  company: MyString
+  file: one
+
+two:
+  transaction: two
+  date: 2020-09-21 23:24:52
+  value: 1.5
+  document: MyString
+  credit_card: MyString
+  owner: MyString
+  company: MyString
+  file: two
