@@ -1,3 +1,10 @@
+# Copiando projeto
+
+```
+$ git clone git@github.com:igor-sillva/desafio-ruby-on-rails.git
+$ cd desafio-ruby-on-rails
+``` 
+
 # Iniciando Rails API
 
 Comece buildando
