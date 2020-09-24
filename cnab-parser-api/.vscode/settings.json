@@ -1,0 +1,5 @@
+{
+  "ruby.rubocop.executePath": "~/.rbenv/shims/",
+  "ruby.rubocop.configFilePath": "./.rubocop.yml",
+  "ruby.rubocop.onSave": true
+}

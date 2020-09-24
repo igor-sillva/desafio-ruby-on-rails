@@ -2,6 +2,7 @@
 
 Comece buildando
 ```
+$ cd cnab-parser-api
 $ docker-compose build
 ```
 
