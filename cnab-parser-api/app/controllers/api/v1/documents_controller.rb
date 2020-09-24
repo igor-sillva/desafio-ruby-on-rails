@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::DocumentsController < Api::V1::ApiController
 
   before_action :set_document, only: [:show, :destroy]

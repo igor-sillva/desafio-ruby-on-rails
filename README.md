@@ -24,16 +24,27 @@ $ docker-compose run app bundle exec rails db:seed
 Finalmente, inicie a aplicação
 ```
 $ docker-compose up --build
-$ docker run -d --name app app
 ```
 
 Obs: a `aplicação` estará rodando em `localhost:3000`, verifique se não há nenhum serviço rodando nesta porta.
 
+
+
 # Abrindo aplicação Web
 
-Abra o arquivo [Document reader app](./index.html) em um browser moderno com Internet!
+Abra o arquivo [index.html](./index.html) em um browser moderno com Internet!
 
 Pronto!
+
+----------------------------------------------------
+# Testando
+
+```
+$ docker run -d --name app cnab-parser-api_app
+$ docker-compose run app rspec
+$ docker cp app:/app/coverage .
+$ xdg-open ./coverage/index.html
+```
 
 ----------------------------------------------------------
 # Documentação
@@ -266,13 +277,4 @@ fetch("http://localhost:3000/api/v1/documents/1", {
 
 // @return
 // empty
-```
-
-----------------------------------------------------
-# Testando
-
-```
-$ docker-compose run app rspec
-$ docker cp app:/app/coverage .
-$ xdg-open ./coverage/index.html
 ```

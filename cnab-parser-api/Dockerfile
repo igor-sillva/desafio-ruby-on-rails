@@ -18,7 +18,7 @@ RUN ruby --version
 RUN rails --version
 RUN bundle --version
 
-COPY . .
+COPY . /app
 
 VOLUME ["$INSTALL_PATH/public"]
 

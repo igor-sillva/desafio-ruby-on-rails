@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::CnabsController < ApplicationController
 
   before_action :set_cnab, only: [:destroy]
