@@ -20,7 +20,6 @@ describe Api::V1::DocumentsController, type: :request do
   end
 
   describe 'POST /api/v1/documents' do
-
     let(:file_to_upload) { fixture_file_upload(Rails.root.join('spec/CNAB.txt'), 'text/plain') }
     
     it 'carrega 1 arquivo e salva 21 cnabs' do
@@ -28,6 +27,24 @@ describe Api::V1::DocumentsController, type: :request do
       
       expect(Document.count).to eql(1)
       expect(Cnab.count).to eql(21)
+    end
+  end
+
+  describe 'POST /api/v1/documents' do
+    let(:file_to_upload) { fixture_file_upload(Rails.root.join('spec/CNABINVALID.txt'), 'text/plain') }
+    
+    it 'é valido o arquivo?' do
+      post '/api/v1/documents', params: { file: file_to_upload }, headers: @auth_params
+      
+      expect(response).to have_http_status(422)
+    end
+  end
+
+  describe 'POST /api/v1/documents' do    
+    it 'arquivo está presente?' do
+      post '/api/v1/documents', headers: @auth_params
+      
+      expect(response).to have_http_status(422)
     end
   end
 

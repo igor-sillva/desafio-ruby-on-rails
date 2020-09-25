@@ -15,6 +15,12 @@ describe Api::V1::CnabsController, type: :request do
 
     it "retorna os cnabs do usuario" do
       expect(response).to have_http_status(:ok)
+      expect(response.body).to eq({
+        data: ActiveModelSerializers::SerializableResource.new(
+          Cnab.all, 
+          each_serializer: CnabSerializer
+        )
+      }.to_json)
     end
   end
 
@@ -35,6 +41,14 @@ describe Api::V1::CnabsController, type: :request do
 
     it "deleta cnab e retorna :no_content" do
       expect(response).to have_http_status(:no_content)
+    end
+  end
+
+  describe 'DELETE /api/v1/cnabs' do
+    before { delete "/api/v1/cnabs/1", headers: @auth_params }
+
+    it "deleta cnab e retorna :not_found" do
+      expect(response).to have_http_status(:not_found)
     end
   end
 

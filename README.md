@@ -42,8 +42,6 @@ Pronto!
 ```
 $ docker run -d --name app cnab-parser-api_app
 $ docker-compose run app rspec
-$ docker cp app:/app/coverage .
-$ xdg-open ./coverage/index.html
 ```
 
 ----------------------------------------------------------

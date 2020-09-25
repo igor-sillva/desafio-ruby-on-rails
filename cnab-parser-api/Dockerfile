@@ -10,15 +10,12 @@ RUN mkdir -p $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH
 
-RUN gem install rails bundler
+RUN rm -f Gemfile.lock
+RUN gem install rails bundler rake
 COPY Gemfile Gemfile
 RUN bundle install
 
-RUN ruby --version
-RUN rails --version
-RUN bundle --version
-
-COPY . /app
+COPY . .
 
 VOLUME ["$INSTALL_PATH/public"]
 

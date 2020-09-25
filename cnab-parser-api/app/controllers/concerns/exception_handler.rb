@@ -20,10 +20,6 @@ module ExceptionHandler
       json_error(e.message, :unprocessable_entity)
     end
 
-    rescue_from ActiveRecord::RecordNotDestroyed do |e|
-      json_error(e.message, :unprocessable_entity)
-    end
-
     rescue_from CanCan::AccessDenied do |e|
       json_error(e.message, :forbidden)
     end
