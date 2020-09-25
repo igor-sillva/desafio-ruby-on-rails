@@ -667,6 +667,7 @@ const App = (() => {
             const totalElement = `
               <ion-button fill="clear" color="${total < 0 ? 'danger' : 'success'}" 
                 size="large" slot="end">
+                Balanço
                 <ion-icon name="${total < 0 ? 'trending-down-outline' : 'trending-up-outline'}" slot="start"></ion-icon>
                 ${total}
               </ion-button>
@@ -690,21 +691,18 @@ const App = (() => {
                     <ion-label>
                       <h2>${cnab.code} - ${cnab.type}</h2>
                       <p>${cnab.owner} - ${cnab.cpf} - ${cnab.credit_card}</p>
+                      <ion-note>${new Date(cnab.datetime).toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</ion-note>
                     </ion-label>
-                    <ion-button fill="clear" color="${cnab.incoming ? 'success': 'danger'}" size="large" slot="end">
-                      <ion-icon slot="start"
-                        name="${cnab.incoming ? 'arrow-up-outline': 'arrow-down-outline'}"></ion-icon>
-                        ${cnab.value}
-                    </ion-button>
+                    <div slot="end">
+                      <ion-button fill="clear" color="${cnab.incoming ? 'success': 'danger'}" size="large">
+                        <ion-icon slot="start"
+                          name="${cnab.incoming ? 'arrow-up-outline': 'arrow-down-outline'}"></ion-icon>
+                          ${cnab.value}
+                      </ion-button>
+                    </div>
                   </ion-item>
                 </ion-item-sliding>
               `).join('')}
-              <ion-item>
-                <ion-label>
-                  <h1>Total</h1>
-                </ion-label>
-                ${totalElement}
-              </ion-item>
               <ion-item-divider color="light"></ion-item-divider>
             `;
           });

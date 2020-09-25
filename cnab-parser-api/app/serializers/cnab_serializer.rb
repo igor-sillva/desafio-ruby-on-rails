@@ -1,5 +1,5 @@
 class CnabSerializer < ActiveModel::Serializer
-  attributes :id, :code, :type, :incoming, :value, :cpf, :credit_card, :owner, :company
+  attributes :id, :code, :type, :incoming, :value, :cpf, :datetime, :credit_card, :owner, :company
 
   def code
     object.tx.code
